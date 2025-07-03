@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
+import html2canvas from "html2canvas"; // 导入库
 
 //——————————————————————————————————————————————————————————————————————————————————————
 const resetPreview = () => {
@@ -46,6 +47,29 @@ watch(url, (n) => {
 const scrollBar = ref(false);
 
 const coverShow = ref(false);
+
+// 新增：下载预览内容为 PNG
+const downloadPreview = async () => {
+  const previewBox = document.querySelector(".preview-box") as HTMLElement;
+
+  if (!previewBox) return;
+
+  try {
+    const canvas = await html2canvas(previewBox, {
+      scale: 2, // 提高分辨率（可选）
+      backgroundColor: null, // 透明背景（可选）
+      logging: false, // 禁用日志（可选）
+    });
+
+    // 转换为 PNG 并下载
+    const link = document.createElement("a");
+    link.download = "preview.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  } catch (error) {
+    console.error("下载失败:", error);
+  }
+};
 </script>
 
 <template>
@@ -94,6 +118,8 @@ const coverShow = ref(false);
     <!-- -------------------------------------------------------------- -->
     <transition name="fade">
       <div class="controls" v-if="!activeDevice">
+        <!-- 新增：下载按钮 -->
+        <button @click="downloadPreview" class="download-btn"><i class="iconfont icon-download"></i> 下载截图</button>
         <!-- 网址 -->
         <div class="url">
           <div class="default">
@@ -463,6 +489,20 @@ body {
         font-size: 12px;
       }
     }
+  }
+
+  .download-btn {
+    padding: 8px 16px;
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+
+  .download-btn:hover {
+    background: #45a049;
   }
 
   @media screen and (max-width: 1100px) {
