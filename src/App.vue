@@ -119,7 +119,7 @@ const downloadPreview = async () => {
     <transition name="fade">
       <div class="controls" v-if="!activeDevice">
         <!-- 新增：下载按钮 -->
-        <button @click="downloadPreview" class="download-btn"><i class="iconfont icon-download"></i> 下载截图</button>
+        <!-- <button @click="downloadPreview" class="download-btn"><i class="iconfont icon-download"></i> 下载截图</button> -->
         <!-- 网址 -->
         <div class="url">
           <div class="default">
