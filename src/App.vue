@@ -1,55 +1,51 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch } from "vue";
 
 //——————————————————————————————————————————————————————————————————————————————————————
 const resetPreview = () => {
-  activeDevice.value = ''
-  coverShow.value = false
-}
-document.body.addEventListener('click', () => void resetPreview())
+  activeDevice.value = "";
+  coverShow.value = false;
+};
+document.body.addEventListener("click", () => void resetPreview());
 
 // 设备单独处理
 enum Device {
-  phone = 'phone',
-  pad = 'pad',
-  computer = 'computer',
-  laptop = 'laptop' // 新增笔记本设备
+  phone = "phone",
+  pad = "pad",
+  computer = "computer",
+  laptop = "laptop", // 新增笔记本设备
 }
 
-
-const activeDevice = {
-
-} = ref<Device | ''>('')
+const activeDevice = ({} = ref<Device | "">(""));
 
 const handleActiveDevice = (device: Device) => {
   activeDevice.value = device;
   coverShow.value = true;
-}
+};
 
 //——————————————————————————————————————————————————————————————————————————————————————
 
 // 网址处理
-const protocol = ref('https');     // 默认协议为 https
-const url = ref('www.liushen.fun')
-const phone = ref('')
-const pad = ref('')
-const computer = ref('')
-const laptop = ref('')
-const customURL = ref(false)
+const protocol = ref("https"); // 默认协议为 https
+const url = ref("baiwumm.com");
+const phone = ref("");
+const pad = ref("");
+const computer = ref("");
+const laptop = ref("");
+const customURL = ref(false);
 
 watch([phone, pad, computer], () => {
-  url.value = ''
-})
+  url.value = "";
+});
 
 watch(url, (n) => {
-  url.value = n.replace(/http(s?)\:\/\//, '')
-})
+  url.value = n.replace(/http(s?)\:\/\//, "");
+});
 
 // 滚动条处理
-const scrollBar = ref(false)
+const scrollBar = ref(false);
 
-const coverShow = ref(false)
-
+const coverShow = ref(false);
 </script>
 
 <template>
@@ -61,21 +57,37 @@ const coverShow = ref(false)
       </div>
     </transition>
     <div class="preview-box">
-      <div class="computer" :class="{ active: activeDevice === Device.computer, activated: activeDevice }"
-        @click.stop="handleActiveDevice(Device.computer)">
-        <iframe :src="`${protocol}://${url || computer}`" frameborder="0" :scrolling="scrollBar ? 'yes' : 'no'"></iframe>
+      <div
+        class="computer"
+        :class="{ active: activeDevice === Device.computer, activated: activeDevice }"
+        @click.stop="handleActiveDevice(Device.computer)"
+      >
+        <iframe
+          :src="`${protocol}://${url || computer}`"
+          frameborder="0"
+          :scrolling="scrollBar ? 'yes' : 'no'"
+        ></iframe>
       </div>
-      <div class="laptop" :class="{ active: activeDevice === Device.laptop, activated: activeDevice }"
-        @click.stop="handleActiveDevice(Device.laptop)">
+      <div
+        class="laptop"
+        :class="{ active: activeDevice === Device.laptop, activated: activeDevice }"
+        @click.stop="handleActiveDevice(Device.laptop)"
+      >
         <iframe :src="`${protocol}://${url || laptop}`" frameborder="0" :scrolling="scrollBar ? 'yes' : 'no'"></iframe>
       </div>
 
-      <div class="phone" :class="{ active: activeDevice === Device.phone, activated: activeDevice }"
-        @click.stop="handleActiveDevice(Device.phone)">
+      <div
+        class="phone"
+        :class="{ active: activeDevice === Device.phone, activated: activeDevice }"
+        @click.stop="handleActiveDevice(Device.phone)"
+      >
         <iframe :src="`${protocol}://${url || phone}`" frameborder="0" :scrolling="scrollBar ? 'yes' : 'no'"></iframe>
       </div>
-      <div class="pad" :class="{ active: activeDevice === Device.pad, activated: activeDevice }"
-        @click.stop="handleActiveDevice(Device.pad)">
+      <div
+        class="pad"
+        :class="{ active: activeDevice === Device.pad, activated: activeDevice }"
+        @click.stop="handleActiveDevice(Device.pad)"
+      >
         <iframe :src="`${protocol}://${url || pad}`" frameborder="0" :scrolling="scrollBar ? 'yes' : 'no'"></iframe>
       </div>
     </div>
@@ -86,31 +98,32 @@ const coverShow = ref(false)
         <div class="url">
           <div class="default">
             <span @click.stop="customURL = !customURL" class="website" :class="{ active: customURL }">
-              <i class="iconfont icon-icon_wangye"></i> 网址</span>
+              <i class="iconfont icon-icon_wangye"></i> 网址</span
+            >
             <transition name="fade">
-              <div style="display: inline-block ;">
-                <span style="font-size: 16px;">{{protocol}}://</span>
-                <input type="text" placeholder="请输入网址" v-model.trim="url" class="url">
+              <div style="display: inline-block">
+                <span style="font-size: 16px">{{ protocol }}://</span>
+                <input type="text" placeholder="请输入网址" v-model.trim="url" class="url" />
               </div>
             </transition>
           </div>
           <transition name="fade">
             <div class="custom" v-if="customURL">
               <div class="laptop">
-                <span><i class="iconfont icon-wangye"></i> 笔记本</span><span>{{ protocol }}://</span><input type="text"
-                  placeholder="请输入网址" v-model.trim="laptop" class="url">
+                <span><i class="iconfont icon-wangye"></i> 笔记本</span><span>{{ protocol }}://</span
+                ><input type="text" placeholder="请输入网址" v-model.trim="laptop" class="url" />
               </div>
               <div class="phone">
-                <span><i class="iconfont icon-shumashouji"></i> 手机</span><span>{{ protocol }}://</span><input type="text"
-                  placeholder="请输入网址" v-model.trim="phone" class="url">
+                <span><i class="iconfont icon-shumashouji"></i> 手机</span><span>{{ protocol }}://</span
+                ><input type="text" placeholder="请输入网址" v-model.trim="phone" class="url" />
               </div>
               <div class="pad">
-                <span><i class="iconfont icon-pingban"></i> 平板</span><span>{{ protocol }}://</span><input type="text"
-                  placeholder="请输入网址" v-model.trim="pad" class="url">
+                <span><i class="iconfont icon-pingban"></i> 平板</span><span>{{ protocol }}://</span
+                ><input type="text" placeholder="请输入网址" v-model.trim="pad" class="url" />
               </div>
               <div class="computer">
-                <span><i class="iconfont icon-diannao"></i> 电脑</span><span>{{ protocol }}://</span><input type="text"
-                  placeholder="请输入网址" v-model.trim="computer" class="url">
+                <span><i class="iconfont icon-diannao"></i> 电脑</span><span>{{ protocol }}://</span
+                ><input type="text" placeholder="请输入网址" v-model.trim="computer" class="url" />
               </div>
               <div class="close" @click="customURL = false"><i class="iconfont icon-cancel-1-copy"></i></div>
             </div>
@@ -233,7 +246,7 @@ body {
       top: 0;
       width: 610px;
       height: 572px;
-      background: url(./assets/images/new-model/computer.png) no-repeat 0 0/contain;
+      background: url(./assets/images/new-model/computer.png) no-repeat 0 0 / contain;
       transform-origin: center top;
       transform: translate(-50%);
 
@@ -257,7 +270,7 @@ body {
       left: 0px;
       width: 600px;
       height: 380px;
-      background: url(./assets/images/new-model/laptop.png) no-repeat 0 0/contain;
+      background: url(./assets/images/new-model/laptop.png) no-repeat 0 0 / contain;
       transform: scale(0.9);
 
       &.active {
@@ -277,14 +290,13 @@ body {
       }
     }
 
-
     .phone {
       top: 240px;
       z-index: 2;
       left: 56%;
       width: 168px;
       height: 350px;
-      background: url(./assets/images/new-model/mobile.png) no-repeat 0 0/contain;
+      background: url(./assets/images/new-model/mobile.png) no-repeat 0 0 / contain;
       transform: scale(0.8);
 
       &.active {
@@ -309,7 +321,7 @@ body {
       left: 65%;
       width: 300px;
       height: 400px;
-      background: url(./assets/images/new-model/tablet.png) no-repeat 0 0/contain;
+      background: url(./assets/images/new-model/tablet.png) no-repeat 0 0 / contain;
 
       &.active {
         top: 50%;
@@ -356,7 +368,6 @@ body {
       .website,
       .custom span:first-child {
         margin-right: 10px;
-
       }
 
       .website {
@@ -413,23 +424,22 @@ body {
           outline: none;
         }
       }
-
     }
 
     .protocol {
-        appearance: none;
-        margin-left: 20px;
-        text-align-last: center;
-        background-color: rgba(97, 97, 97, 0.8);
-        color: rgba(255, 255, 255, 0.8);
-        height: 30px;
-        width: 70px;
-        font-size: 16px;
-        padding: 0 5px;
-        border-radius: 20px;
-        align-items: center;
-        justify-content: center;
-      }
+      appearance: none;
+      margin-left: 20px;
+      text-align-last: center;
+      background-color: rgba(97, 97, 97, 0.8);
+      color: rgba(255, 255, 255, 0.8);
+      height: 30px;
+      width: 70px;
+      font-size: 16px;
+      padding: 0 5px;
+      border-radius: 20px;
+      align-items: center;
+      justify-content: center;
+    }
 
     .scroll-bar {
       margin-left: 20px;
@@ -455,8 +465,7 @@ body {
     }
   }
 
-
-  @media screen and (max-width:1100px) {
+  @media screen and (max-width: 1100px) {
     .preview-box {
       // left: 0;
       transform-origin: center 0;
@@ -464,39 +473,34 @@ body {
     }
   }
 
-  @media screen and (max-width:1000px) {
+  @media screen and (max-width: 1000px) {
     .preview-box {
       transform: translate(-50%) scale(0.8);
     }
   }
 
-  @media screen and (max-width:900px) {
+  @media screen and (max-width: 900px) {
     .preview-box {
       transform: translate(-50%) scale(0.7);
     }
   }
 
-  @media screen and (max-width:800px) {
+  @media screen and (max-width: 800px) {
     .preview-box {
       transform: translate(-50%) scale(0.6);
     }
   }
 
-  @media screen and (max-width:700px) {
+  @media screen and (max-width: 700px) {
     .preview-box {
       transform: translate(-50%) scale(0.5);
     }
   }
 
-  @media screen and (max-width:600px) {
+  @media screen and (max-width: 600px) {
     .preview-box {
       transform: translate(-50%) scale(0.4);
     }
   }
-
-
-
-
 }
-
 </style>
