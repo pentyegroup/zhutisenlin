@@ -28,7 +28,7 @@ const handleActiveDevice = (device: Device) => {
 
 // 网址处理
 const protocol = ref("https"); // 默认协议为 https
-const url = ref(“themeforest.net/?auto_signin=true");
+const url = ref(“www.themeforest.net");
 const phone = ref("");
 const pad = ref("");
 const computer = ref("");
